@@ -12,7 +12,7 @@ export function IdeaGenerator() {
     <section className="w-full py-12 md:py-24 bg-gray-50 dark:bg-gray-900">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center mb-8">
-          <div className="space-y-2">
+          <div className="space-y-2 flex flex-col gap-12 items-center">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Decentralized Knowledge Graph Construction and Querying Platform</h2>
             <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               A platform leveraging MERN stack and graph databases to collaboratively construct and query a decentralized knowledge graph, with advanced reasoning capabilities and blockchain-based access control.

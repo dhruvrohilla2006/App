@@ -4,6 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { List, CheckCircle, Code, Database, CloudCog, Users, Clock, BookOpen, Sparkles } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { useNavigate } from 'react-router-dom';
+
 
 const Button = ({ children, className = "", variant = "default", onClick }) => {
   const baseClasses = "px-4 py-2 rounded-md font-medium transition-colors";
@@ -39,8 +41,9 @@ const Select = ({ label, options, value, onChange }) => {
     </div>
   );
 };
-
 const ProjectIdeaGenerator = () => {
+
+  const naviagate = useNavigate();
   const [showForm, setShowForm] = useState(true);
   const [showProjectDetails, setShowProjectDetails] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -79,25 +82,31 @@ const ProjectIdeaGenerator = () => {
   const experienceLevels = ['Beginner', 'Intermediate', 'Advanced'];
   const difficultyLevels = ['Easy', 'Medium', 'Hard'];
   
-  const handleGenerate = () => {
+  const handleGenerate = async() => {
     setIsGenerating(true);
-    
-    // Simulate API call to generate project
-    setTimeout(() => {
-      // Map difficulty levels to the format used in the showcase
-      const difficultyMap = {
-        'Easy': 'Beginner',
-        'Medium': 'Intermediate',
-        'Hard': 'Advanced'
-      };
+
+    // console.log({ category, role, experienceLevel, difficulty });
+
+    try{
+      const response = await fetch("http://localhost:8000/prompt",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, role, experienceLevel, difficulty })
+      })
+      if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+      const data = await response.json();
       
-      // Generate a project based on the selected options
-      const generatedProject = generateProjectIdea(category, role, experienceLevel, difficultyMap[difficulty]);
-      setProjectData(generatedProject);
-      setShowForm(false);
-      setShowProjectDetails(true);
-      setIsGenerating(false);
-    }, 1500);
+      // console.log("Generated Data:", data);
+      setProjectData(data);
+      localStorage.setItem("ProjectDetails",JSON.stringify(data));
+      setShowProjectDetails(true)
+      setShowForm(false)
+    }
+    catch(error){
+      console.error("Error:", error.message);
+    }
+    
   };
   
   const handleReset = () => {
@@ -106,168 +115,6 @@ const ProjectIdeaGenerator = () => {
     setProjectData(null);
   };
 
-  // Function to generate a project idea based on user selections
-  const generateProjectIdea = (category, role, experienceLevel, difficulty) => {
-    // This would typically be a server call, but we're generating sample data
-    
-    let projectIdeas = {
-      "Web Development": {
-        "title": "Decentralized Knowledge Graph Construction and Querying Platform",
-        "description": "A platform leveraging MERN stack and graph databases to collaboratively construct and query a decentralized knowledge graph, with advanced reasoning capabilities and blockchain-based access control.",
-        "features": [
-          "Collaborative knowledge graph construction with version control.",
-          "Advanced graph querying capabilities using SPARQL or similar language.",
-          "Decentralized data storage and retrieval using IPFS or similar technology.",
-          "Blockchain-based access control and data provenance tracking.",
-          "Reasoning engine for inferring new knowledge from existing graph data.",
-          "User roles and permissions management for contribution and access control.",
-          "API for external applications to interact with the knowledge graph."
-        ],
-        "technologies": [
-          "MongoDB (or ArangoDB for native graph support)",
-          "Express.js",
-          "React.js",
-          "Node.js",
-          "GraphQL (or REST API)",
-          "IPFS (or similar decentralized storage)",
-          "Blockchain (Ethereum or similar)",
-          "SPARQL Endpoint (for graph querying)",
-          "Reasoning Engine (Pellet, HermiT, or custom)",
-          "Docker/Kubernetes (for deployment)"
-        ],
-        "project_type": "Web App",
-        "use_case": "Education | Research | Data Management",
-        "estimated_time": difficulty === "Beginner" ? "2 Months" : difficulty === "Intermediate" ? "4 Months" : "6 Months",
-        "required_skills": [
-          "MERN Stack Proficiency",
-          "Graph Database Concepts",
-          "Knowledge Representation and Reasoning",
-          "Decentralized Technologies (IPFS, Blockchain)",
-          "Security and Access Control",
-          "API Design and Development",
-          "Cloud Deployment (AWS, Azure, GCP)"
-        ],
-        "target_audience": "Researchers | Data Scientists | Knowledge Engineers | Developers",
-        "learning_outcomes": [
-          "Mastery of MERN stack development.",
-          "Understanding of graph database technologies and query languages.",
-          "Experience with decentralized technologies for data storage and access control.",
-          "Knowledge of knowledge representation and reasoning techniques.",
-          "Ability to design and implement secure and scalable web applications.",
-          "Experience with collaborative software development practices."
-        ]
-      },
-      "Mobile App": {
-        "title": "Augmented Reality Field Guide for Local Flora and Fauna",
-        "description": "A mobile application that uses augmented reality to identify and provide information about local plants and animals, integrating with citizen science databases for community contributions.",
-        "features": [
-          "Real-time plant and animal identification using computer vision.",
-          "Augmented reality overlays with educational information.",
-          "Offline mode for use in remote areas without connectivity.",
-          "User contributions to crowd-sourced biodiversity database.",
-          "Seasonal tracking and migration patterns visualization.",
-          "Gamification elements to encourage exploration and learning.",
-          "Integration with global biodiversity databases."
-        ],
-        "technologies": [
-          "React Native or Flutter",
-          "ARKit (iOS) / ARCore (Android)",
-          "TensorFlow Lite for on-device ML",
-          "Firebase for backend services",
-          "MongoDB for database",
-          "Node.js for API development",
-          "GIS and mapping libraries",
-          "Push notifications for seasonal events"
-        ],
-        "project_type": "Mobile App",
-        "use_case": "Education | Conservation | Citizen Science",
-        "estimated_time": difficulty === "Beginner" ? "3 Months" : difficulty === "Intermediate" ? "5 Months" : "8 Months",
-        "required_skills": [
-          "Mobile App Development",
-          "Augmented Reality Implementation",
-          "Computer Vision and ML Integration",
-          "API Development and Consumption",
-          "Offline-First Development Approach",
-          "User Experience Design",
-          "Working with Geospatial Data"
-        ],
-        "target_audience": "Nature Enthusiasts | Educators | Conservationists | Students",
-        "learning_outcomes": [
-          "Proficiency in mobile development with AR capabilities.",
-          "Understanding of ML-based image recognition systems.",
-          "Experience creating offline-first applications.",
-          "Knowledge of biodiversity data structures and taxonomies.",
-          "Skills in designing intuitive AR user experiences.",
-          "Understanding of citizen science data collection methodologies."
-        ]
-      },
-      "AI/ML": {
-        "title": "Multimodal Personal Assistant for Creative Workflows",
-        "description": "An AI assistant that understands voice, text, and visual input to help creators manage their workflow, provide relevant inspiration, and automate repetitive tasks across creative software.",
-        "features": [
-          "Natural language processing for understanding creative intent.",
-          "Computer vision for analyzing visual references and work-in-progress.",
-          "Cross-application automation and resource management.",
-          "Personalized inspiration suggestions based on current project.",
-          "Voice-controlled workflow management and commands.",
-          "Integration with creative software APIs (Adobe, Figma, etc.).",
-          "Project progress tracking and deadline management."
-        ],
-        "technologies": [
-          "PyTorch or TensorFlow for ML models",
-          "FastAPI or Flask for backend services",
-          "React/Vue.js for frontend interface",
-          "ONNX for model interoperability",
-          "Docker for deployment",
-          "Redis for caching",
-          "Elasticsearch for knowledge retrieval",
-          "WebSockets for real-time communication"
-        ],
-        "project_type": "AI Application",
-        "use_case": "Creativity | Productivity | Design",
-        "estimated_time": difficulty === "Beginner" ? "4 Months" : difficulty === "Intermediate" ? "7 Months" : "10 Months",
-        "required_skills": [
-          "Machine Learning Model Development",
-          "Natural Language Processing",
-          "Computer Vision",
-          "API Integration with Creative Software",
-          "Real-time System Architecture",
-          "User Experience Design for AI Tools",
-          "Cross-platform Development"
-        ],
-        "target_audience": "Designers | Artists | Content Creators | Creative Professionals",
-        "learning_outcomes": [
-          "Development of multimodal AI systems.",
-          "Integration of AI with existing creative software ecosystems.",
-          "Creation of context-aware assistant technology.",
-          "Understanding of creative workflows and user needs.",
-          "Implementation of personalization algorithms.",
-          "Building systems that enhance human creativity rather than replace it."
-        ]
-      }
-    };
-    
-    // Use the selected category or default to Web Development
-    const baseProject = projectIdeas[category] || projectIdeas["Web Development"];
-    
-    // Add difficulty
-    baseProject.difficulty = difficulty;
-    
-    // Adjust project complexity based on experience level and role
-    if (experienceLevel === "Beginner") {
-      baseProject.features = baseProject.features.slice(0, 4);
-      baseProject.technologies = baseProject.technologies.slice(0, 5);
-    }
-    
-    // Customize for role
-    if (role === "Student") {
-      baseProject.use_case += " | Academic";
-    } else if (role === "Entrepreneur") {
-      baseProject.use_case += " | Commercial";
-    }
-    
-    return baseProject;
-  };
   
   // Calculate difficulty level for progress bar
   const getDifficultyPercentage = (difficulty) => {
@@ -507,7 +354,7 @@ const ProjectIdeaGenerator = () => {
                   {projectData.difficulty}
                 </Badge>
                 <Button onClick={()=>{
-                    console.log("")
+                    naviagate("/full")
                 }} variant="default" className="bg-zinc-800 hover:bg-zinc-900 text-white">
                   Start Project
                 </Button>

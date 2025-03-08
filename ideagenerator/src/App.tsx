@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import Browse from "./pages/Browse";
 import NotFound from "./pages/NotFound";
 import ProjectIdeaGenerator from "./components/ProjectIdeaGenerator";
+import { Demo } from "./components/Demo";
 
 const queryClient = new QueryClient();
 
@@ -24,12 +25,13 @@ const App = () => {
           <BrowserRouter>
             <div className="flex flex-col min-h-screen">
               <Navbar />
-              <main className="flex-1">
+              <main className="flex-1 flex flex-col">
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/browse" element={<Browse />} />
                   <Route path="/generate" element={<ProjectIdeaGenerator />} />
+                  <Route path="/full" element={<Demo />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
