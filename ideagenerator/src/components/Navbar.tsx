@@ -1,7 +1,8 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Menu, X, User, LogOut, Sparkles, Bookmark, FileCode } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -91,12 +92,16 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link to="/profile">
-              <Button variant="default" size="sm">
-                Sign In
-              </Button>
+            <Link to="/generate">
+            <SignedIn>
+              <UserButton/>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton/>
+            </SignedOut>
             </Link>
-          )}
+          )
+        }
         </nav>
 
         {/* Mobile Navigation */}

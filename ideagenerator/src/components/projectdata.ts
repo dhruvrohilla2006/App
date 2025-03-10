@@ -84,7 +84,7 @@ export const projectData = {
           steps: [
             "Create a React app using Create React App: Run `npx create-react-app client` (or `yarn create react-app client`). This sets up a basic React project structure in a `client` directory.",
             "Navigate to the client directory: `cd client`",
-            "Set up routing using React Router: Run `npm install react-router-dom`. Create a `src/components` directory and start building initial components (e.g., `Home.js`, `Login.js`, `Register.js`, `RecipeList.js`).",
+            "Set up routing using React Router: Run `npm install react-router`. Create a `src/components` directory and start building initial components (e.g., `Home.js`, `Login.js`, `Register.js`, `RecipeList.js`).",
             "Configure environment variables: Create a `.env` file in the root of the React project. Store API endpoint URLs (e.g., `REACT_APP_API_URL=http://localhost:5000/api`) here. Remember to prefix variable names with REACT_APP_.",
             "Set up a basic UI framework (optional): Consider using Material-UI, Bootstrap, or Ant Design for pre-built components and styling. Install the chosen framework (e.g., `npm install @mui/material @emotion/react @emotion/styled` for Material-UI).",
             "Create an `api` directory in the `src` folder and write functions for making API calls (using axios or fetch) to the backend.",

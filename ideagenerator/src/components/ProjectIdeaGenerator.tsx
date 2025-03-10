@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { List, CheckCircle, Code, Database, CloudCog, Users, Clock, BookOpen, Sparkles } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 
 const Button = ({ children, className = "", variant = "default", onClick }) => {
